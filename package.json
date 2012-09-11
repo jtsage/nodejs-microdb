@@ -1,0 +1,20 @@
+{
+  "name": "nodejs-microdb",
+  "version": "0.0.1",
+  "description": "A Micro-sized key/document database - very simple. Auto-flush to disk and in-memory options",
+  "main": "microdb.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jtsage/nodejs-microdb.git"
+  },
+  "keywords": [
+    "database",
+    "storage",
+    "tiny"
+  ],
+  "author": "J.T.Sage",
+  "license": "BSD"
+}

@@ -7,7 +7,7 @@ var MicroData = function(opts) {
     'file': '',
     'savetime': 10, // in min ( 0 = do not autosave )
     'maxrec': 0, // 0 = unlimted (only applies to datatype 0)
-    'datatype': 0, // 0 = array, 1 = keyhash
+    'datatype': 1, // 0 = array, 1 = keyhash
     'flushonexit': true
   };
   this.options = defaults;
@@ -28,6 +28,7 @@ var MicroData = function(opts) {
   }
   
   this.findByKey = function(key, value) {
+    if ( self.options.datatype == 0 ) { return false; }
     for ( var x in self.data ) {
       if ( key in self.data[x] && self.data[x][key] === value ) {
         return x;
@@ -62,7 +63,7 @@ var MicroData = function(opts) {
   }
   
   this.add = function(text, num) {
-    if ( typeof num !== 'number' && this.options.datatype == 1 ) {
+    if ( typeof num === 'undefined' && this.options.datatype == 1 ) {
       num = new Date().getTime(); 
     }
     if ( this.options.datatype === 0 ) {
@@ -72,10 +73,11 @@ var MicroData = function(opts) {
           this.data.shift();
         }
       }
+      return this.data.length;
     } else {
       this.data[num] = text;
+      return num;
     }
-    return this.data.length;
   }
   
   this.del = function(num) {
