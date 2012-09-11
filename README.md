@@ -18,31 +18,31 @@ TOC
 * [Licence](#lic)
 
 <a name="usage"></a>Usage
------
-	var microdb = require('nodejs-microdb');
-	
-  var myDB = new microdb({'file':'somefile.db'});
+-------------------------
+
+    var microdb = require('nodejs-microdb');
+    var myDB = new microdb({'file':'somefile.db'});
     
 <a name="options">Options
 -------------------------
 
 When making a new database, you have some choices:
 
-  var myDB = new microdb({
-    'file': '',     // The filename to save to, or empty for memory only
+    var myDB = new microdb({
+      'file': '',     // The filename to save to, or empty for memory only
     
-    'savetime': 10, // In minutes, how often to flush to disk (approx)
-                    // Set this to 0 to diable auto-save.
+      'savetime': 10, // In minutes, how often to flush to disk (approx)
+                      // Set this to 0 to diable auto-save.
     
-    'datatype': 0,  // Which data-type:
-                    //  0 = Array-based, no keys. (useful for storing lists to disk)
-                    //  1 = Object-based, with keys. (what most key/doc's do)
+      'datatype': 0,  // Which data-type:
+                      //  0 = Array-based, no keys. (useful for storing lists to disk)
+                      //  1 = Object-based, with keys. (what most key/doc's do)
                    
-    'maxrec': 10,   // Maximum number of records (for datatype === 0 ONLY)
+      'maxrec': 10,   // Maximum number of records (for datatype === 0 ONLY)
     
-    'flushonexit': true  // Auto-flush when program quits.
-                         // I recommend you leave this on.
-   });
+      'flushonexit': true  // Auto-flush when program quits.
+                           // I recommend you leave this on.
+    });
 
 <a name="api">API
 -----------------
