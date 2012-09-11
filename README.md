@@ -23,8 +23,8 @@ TOC
     var microdb = require('nodejs-microdb');
     var myDB = new microdb({'file':'somefile.db'});
     
-<a name="options">Options
--------------------------
+<a name="options"></a>Options
+-----------------------------
 
 When making a new database, you have some choices:
 
@@ -44,8 +44,8 @@ When making a new database, you have some choices:
                            // I recommend you leave this on.
     });
 
-<a name="api">API
------------------
+<a name="api"></a>API
+---------------------
 
 ### Datatype === 1 Methods:
 
