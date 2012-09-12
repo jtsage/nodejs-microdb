@@ -40,8 +40,12 @@ When making a new database, you have some choices:
                    
       'maxrec': 10,   // Maximum number of records (for datatype === 0 ONLY)
     
-      'flushonexit': true  // Auto-flush when program quits.
-                           // I recommend you leave this on.
+      'flushonexit': true,   // Auto-flush when program quits.
+                             // I recommend you leave this on.
+
+      'defalutClean': false, // Auto-remove incomplete records on sort opertaions.
+                             // This is useful if your document type isn't consistent.
+                             // It can also be turned on per-query.
     });
 
 <a name="api"></a>API
@@ -56,13 +60,28 @@ Return value is the *"ident"*.
 ####MicroData.del(ident);
 Remove a named "ident" from the store.
 
-####MicroData.findByKey(key, value);
+####MicroData.find(key, value);
 Find a record "ident" by a named key/value pair.  Returns first match, search 
 order is arbitrary.
 
-####MicroData.sortByKey(key, [direction]);
+####MicroData.findAll(key, value);
+Return an array of record "ident"'s where key === value.  Order is arbitrary.
+
+####MicroData.findAllWithKey(key);
+Return an array of record "ident"'s the contain 'key'.  Order is arbitrary.
+
+####MicroData.sortByKey(key, [direction], [alpha], [cleanBad]);
 Returns an array of values and "ident"'s, sorted in "direction" (asc/desc).
-Numeric only.
+Set "alpha" to true for alphanumeric sort.  If 'cleanBad' is
+true, results with one or more 'undefined' values for the specified keys will
+not be returned. NOTE: This is just a convience method to the below...
+
+####MicroData.sortByKeys(sorts, [cleanBad]);
+Returns an array of values and "idents"'s sorted by "sorts" array - where sorts
+is an array of \[key, direction, alpha\] arrays. (see above).  If 'cleanBad' is
+true, results with one or more 'undefined' values for the specified keys will
+not be returned.
+
 
 ### Datatype === 0 Methods:
 

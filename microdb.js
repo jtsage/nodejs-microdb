@@ -8,7 +8,8 @@ var MicroData = function(opts) {
     'savetime': 10, // in min ( 0 = do not autosave )
     'maxrec': 0, // 0 = unlimted (only applies to datatype 0)
     'datatype': 1, // 0 = array, 1 = keyhash
-    'flushonexit': true
+    'flushonexit': true,
+    'defaultClean': false
   };
   this.options = defaults;
   if ( typeof opts === 'object' ) {
@@ -27,8 +28,30 @@ var MicroData = function(opts) {
     });
   }
   
-  this.findByKey = function(key, value) {
-    if ( self.options.datatype == 0 ) { return false; }
+  this.findAll = function(key, value) {
+    if ( self.options.datatype === 0 ) { return false; }
+    var retval = [];
+    for ( var x in self.data ) {
+      if ( key in self.data[x] && self.data[x][key] === value ) {
+        retval.push(x);
+      }
+    }
+    return retval;
+  }
+  
+  this.findAllWithKey = function(key) {
+    if ( self.options.datatype === 0 ) { return false; }
+    var retval = [];
+    for ( x in self.data ) {
+      if ( key in self.data[x] ) {
+        retval.push(x);
+      }
+    }
+    return retval;
+  }
+  
+  this.find = function(key, value) {
+    if ( self.options.datatype === 0 ) { return false; }
     for ( var x in self.data ) {
       if ( key in self.data[x] && self.data[x][key] === value ) {
         return x;
@@ -37,23 +60,61 @@ var MicroData = function(opts) {
     return false;
   }
   
-  this.sortByKey = function(key, direction) {
-    if ( typeof direction !== 'string' ) { direction = 'asc'; }
-    if ( self.options.datatype == 0 ) { return false; }
+  this.sortByKeys = function(sorts,cleanBad) {
+    if ( self.options.datatype === 0 ) { return false; }
+    if ( typeof cleanBad === 'undefined' ) { cleanBad = self.options.defaultClean; }
     var sorter = [];
     for ( var x in self.data ) {
-      if ( key in self.data[x] ) {
-        sorter.push([x, self.data[x][key]]);
+      var temp = [x]
+      for ( var sort in sorts ) {
+        temp.push(self.data[x][sorts[sort][0]]);
       }
+      sorter.push(temp);
     }
     if ( sorter.length > 0 ) {
-      if ( direction === 'asc' ) {
-        return sorter.sort(function(a,b) { return a[1] - b[1]; });
+      for ( var x = sorts.length; x > 0; x-- ) {
+        if ( typeof sorts[x-1][2] !== 'undefined' && sorts[x-1][2] === true ) {
+          if ( sorts[x-1][1] != 'desc' ) {
+            sorter = sorter.sort(function(a,b){
+              if ( a[x] < b[x] ) return -1;
+              if ( a[x] > b[x] ) return 1;
+              return 0;
+            });
+          } else {
+            sorter = sorter.sort(function(a,b){
+              if ( a[x] > b[x] ) return -1;
+              if ( a[x] < b[x] ) return 1;
+              return 0;
+            });
+          }
+        } else {
+          sorter = sorter.sort(function(a,b) {
+            if ( sorts[x-1][1] != 'asc' ) {
+              return b[x] - a[x];
+            } else {
+              return a[x] - b[x];
+            }
+          });
+        }
       }
-      return sorter.sort(function(a,b) { return b[1] - a[1]; });
-    } else { 
-      return false;
     }
+    if ( cleanBad === false ) { 
+      return sorter;
+    } else {
+      var retSort = [];
+      for ( var x = 0; x < sorter.length; x++ ) {
+        var keepMe = true;
+        for ( var check = 1; check < sorter[x].length; check++ ) {
+          if ( typeof sorter[x][check] === 'undefined' ) { keepMe = false; }
+        }
+        if ( keepMe === true ) { retSort.push(sorter[x]); }
+      }
+      return retSort;
+    }
+  }
+  
+  this.sortByKey = function(key, direction, alpha, cleanBad) {
+    return this.sortByKeys([[key,direction,alpha]], cleanBad);
   }
   
   this.startTime = function() {
