@@ -1,4 +1,5 @@
-// TINY Database file - *vary* simple storage.
+// TINY Database file - *very* simple storage.
+"use strict";
 var fs = require('fs');
 
 var MicroData = function(opts) {
