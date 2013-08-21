@@ -113,7 +113,7 @@ what you should use a real database for.
 
 
 ## <a name="contrib"></a>Contributors
-* [J.T. Sage](https://github.com/jtsgae/)
+* [J.T. Sage](https://github.com/jtsage/)
 
 ## <a name="compat"></a>Compatibility
 This module was only tested using node >= 0.8.8.  There is no reason it shouldn't
